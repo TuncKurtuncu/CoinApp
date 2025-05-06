@@ -15,4 +15,5 @@ export default defineConfig({
   server: {
     historyApiFallback: true, // React Router için yönlendirme ayarı
   }
-})
+});
+
