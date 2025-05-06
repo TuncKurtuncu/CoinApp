@@ -4,14 +4,11 @@ import tailwindcss from "@tailwindcss/vite";
 
 
 export default defineConfig({
-  base: './',
+  base: '', 
   plugins: [react(),
-            tailwindcss()
+    tailwindcss()
   ],
   build: {
     outDir: 'dist'
-  },
-  server: {
-    historyApiFallback: true
   }
 })
