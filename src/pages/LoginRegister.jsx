@@ -37,7 +37,7 @@ function LoginRegisterPage() {
         setAlertMessage("Bu email daha önce kullanılmış.");
       } else {
         setAlertType("error");
-        setAlertMessage("Hata: " + error.message);
+        setAlertMessage("hatalı email ya da şifre");
       }
       setTimeout(() => {
         setAlertMessage(""); // alert otomatik kapanır
