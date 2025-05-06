@@ -11,5 +11,8 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: true
+  },
+  server: {
+    historyApiFallback: true, // React Router için yönlendirme ayarı
   }
 })
