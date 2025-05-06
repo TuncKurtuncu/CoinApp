@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  base: '/',
+  base: '/coinApp/', // Uygulamanızın bulunduğu alt klasörü belirtin
   plugins: [
     react(),
     tailwindcss()
