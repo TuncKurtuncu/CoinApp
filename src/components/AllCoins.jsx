@@ -20,6 +20,8 @@ const AllCoins = () => {
   const currentCoins = allCoins.slice(IndexOfFirstItem, IndexOfLastItem);
   const totalPages = Math.ceil(allCoins.length / ItemsPerPage);
 
+  const [retryCount, setRetryCount] = useState(0);
+
   // Auth dinleme
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((u) => {
@@ -29,14 +31,36 @@ const AllCoins = () => {
   }, []);
 
   // Coin verilerini çek
-  useEffect(() => {
-    const getData = async () => {
+  const getData = async () => {
+    try {
       setLoading(true);
       const allCoin = await fetchAllCoins();
-      setAllCoins(allCoin);
-      setLoading(false);
-    };
-    getData();
+
+      if (allCoin.length > 0) {
+        setAllCoins(allCoin);
+        setLoading(false);
+        setRetryCount(0); // Başarılıysa retry sıfırlanır
+      } else {
+        throw new Error("Boş veri geldi");
+      }
+    } catch (error) {
+      console.error("Veri çekme hatası:", error.message);
+      setRetryCount(prev => prev + 1);
+
+      // Exponential retry delay
+      const delay = Math.min(60000, 2000 * retryCount); // Max 60sn
+      setTimeout(getData, delay);
+    }
+  };
+
+  useEffect(() => {
+    getData(); // İlk veri çekimi
+
+    const interval = setInterval(() => {
+      getData(); // Her 60 saniyede bir veri yenile
+    }, 60000);
+
+    return () => clearInterval(interval); // Temizleme
   }, []);
 
   // Favori verilerini yükle (önce Firestore, sonra local fallback)

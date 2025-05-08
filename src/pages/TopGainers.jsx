@@ -18,7 +18,9 @@ const[gainersData,setGainersData] = useState([]);
 
   return (
     <div>
-        <Header/>
+        <div className=' sticky top-0 z-50'>
+            <Header />
+          </div>
         <div className='grid justify-items-center'>
         <div className='m-auto mt-20 flex items-center'>
             <span className='animate-pulse mr-1 text-4xl '>🔥</span>
