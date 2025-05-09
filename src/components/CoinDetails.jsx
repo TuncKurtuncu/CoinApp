@@ -70,7 +70,7 @@ const CoinDetails = () => {
     getData();
     const interval = setInterval(()=>{
       getData();
-    },60000);
+    },6000);
     return () => clearInterval(interval);
   }, [id]);
 
