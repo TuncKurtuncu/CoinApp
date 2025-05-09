@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import CoinLoader from '../components/Loader';
 import { Link } from "react-router-dom";
-import { fetchNewlyListedCoins } from '../api/coinsApi'; // varsayım olarak
+import { fetchNewlyListedCoins } from '../api/coinsApi'; 
 
 const NewCoins = () => {
   const [newCoins, setNewCoins] = useState([]);
