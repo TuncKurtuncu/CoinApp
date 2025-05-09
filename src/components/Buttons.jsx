@@ -31,14 +31,14 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="px-2 py-1 bg-gray-700 rounded disabled:opacity-50"
+        className="px-2 py-1 text-sm w-fit  bg-gray-700 rounded disabled:opacity-50"
       >
         Prev
       </button>
 
       {generatePages().map((page, index) =>
         page === '...' ? (
-          <span key={index} className="px-2 py-1 text-gray-400">
+          <span key={index} className="md:px-2 py-1 text-sm w-fit  text-gray-400">
             ...
           </span>
         ) : (
@@ -59,7 +59,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="px-2 py-1 bg-gray-700 rounded disabled:opacity-50"
+        className=" px-2 py-1 text-sm w-fit  bg-gray-700 rounded disabled:opacity-50"
       >
         Next
       </button>

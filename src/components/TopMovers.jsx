@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 
 
-const TopMovers = ({onGainerLoaded, onLoserLoaded ,onTopVolumeLoaded,onNewCoinsLoaded, hideUI = false, newCoinsCount, gainersCount, losersCount,topVolumeCount}) => {
+const TopMovers = () => {
   const [gainers, setGainers] = useState([]);
   const [losers, setLosers] = useState([]);
   const [populars, setPopulars] = useState([]);
@@ -15,68 +15,56 @@ const TopMovers = ({onGainerLoaded, onLoserLoaded ,onTopVolumeLoaded,onNewCoinsL
   const defaultTopVolumeCount = 5;
   const defaultNewCoinsCoun =5;
   
-  
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
     const getData = async () => {
-      
-      
-      const allCoins = await fetchAllCoins();
-      const popularCoins = await fetchPopularCoins();
-      const coins = await fetchNewlyListedCoins();
+      try {
+        const allCoins = await fetchAllCoins();
+        const popularCoins = await fetchPopularCoins();
+        const coins = await fetchNewlyListedCoins();
+  
+        const validCoins = allCoins.filter(
+          coin => coin.price_change_percentage_24h !== null
+        );
+  
+        const topGainers = [...validCoins]
+          .sort((a, b) => b.price_change_percentage_24h - a.price_change_percentage_24h)
+          .slice(0,  defaultGainersCount);
+  
+        const topLosers = [...validCoins]
+          .sort((a, b) => a.price_change_percentage_24h - b.price_change_percentage_24h)
+          .slice(0,  defaultLosersCount);
+  
+        const slicedPopulars = popularCoins.slice(0, defaultTopVolumeCount);
+        const slicedNews = coins.slice(0,  defaultNewCoinsCoun);
+  
+        setPopulars(slicedPopulars);
+        setGainers(topGainers);
+        setLosers(topLosers);
+        setNewCoins(slicedNews);
+        setRetryCount(0); // Başarılıysa retry sıfırlanır
         
-        
-    
-      
-      // Geçerli yüzde değişim olanları filtrele
-      const validCoins = allCoins.filter(
-        coin => coin.price_change_percentage_24h !== null
-      );
-
-      // Kazananlar
-      const topGainers = [...validCoins]
-        .sort((a, b) => b.price_change_percentage_24h - a.price_change_percentage_24h)
-        .slice(0, gainersCount || defaultGainersCount );
-
-      // Kaybedenler
-      const topLosers = [...validCoins]
-        .sort((a, b) => a.price_change_percentage_24h - b.price_change_percentage_24h)
-        .slice(0, losersCount || defaultLosersCount);
-
-        
-
-
-      const slicedPopulars = popularCoins.slice(0, topVolumeCount  || defaultTopVolumeCount);
-      const slicedNews = coins.slice(0, newCoinsCount||defaultNewCoinsCoun);
-      setPopulars(slicedPopulars);
-      setGainers(topGainers);
-      setLosers(topLosers);
-      setNewCoins(slicedNews); 
-      
-      if (onGainerLoaded) {
-        onGainerLoaded(topGainers);
-       
-      }
-
-      if (onLoserLoaded) {
-        onLoserLoaded(topLosers);
-      }
-
-      if (onTopVolumeLoaded) {
-        onTopVolumeLoaded(slicedPopulars)
-      }
-      if (onNewCoinsLoaded) {
-        onNewCoinsLoaded(slicedNews)
+      } catch (error) {
+        console.error("Veri çekme hatası:", error.message);
+        setRetryCount(prev => prev + 1);
+  
+        // Exponential retry delay (max 60sn)
+        const delay = Math.min(60000, 2000 * retryCount);
+        setTimeout(getData, delay);
       }
     };
-    
-
-    getData();
+  
+    getData(); // İlk veri çekimi
+  
+    const interval = setInterval(() => {
+      getData(); // Her 60 saniyede bir veri yenile
+    }, 60000);
+  
+    return () => clearInterval(interval); // Temizleme
   }, []);
 
-  if (hideUI) {
-    return null;
-  }
+ 
 
   return (
     <nav>
@@ -85,7 +73,7 @@ const TopMovers = ({onGainerLoaded, onLoserLoaded ,onTopVolumeLoaded,onNewCoinsL
    <div className="flex flex-col w-72 p-5 mt-10 mx-5 border rounded-md border-gray-400 xl:mx-20 items-center hover:border-gray-200">
    <div className="flex items-center ">
       <span className="animate-pulse mr-1 mb-2 ">🚀</span>
-       <h2 className="text-xl font-bold mb-2 text-green-600">Top Volume</h2>
+       <h2 className="text-xl font-bold mb-2 text-green-600">Top 10 Volume</h2>
        </div>
    { populars.length > 0 ?  (
      <div>

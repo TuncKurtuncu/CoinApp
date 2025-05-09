@@ -155,7 +155,7 @@ const AllCoins = () => {
                     <img src={coin.image} alt={coin.name} className="w-5 h-5" />
                     <div className="flex flex-col leading-tight">
                       <div className="uppercase font-semibold">{coin.symbol}</div>
-                      <div className="w-32 truncate lg:w-auto sm:truncate-none text-gray-400 text-xs">
+                      <div className="w-16 md:w-20 truncate lg:w-auto sm:truncate-none text-gray-400 text-xs">
                         {coin.name || 'N/A'}
                       </div>
                     </div>

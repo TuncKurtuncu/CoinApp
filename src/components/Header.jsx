@@ -64,7 +64,7 @@ function Header() {
             </button>
               </>
             ) : (
-              <Link to="/login" className="px-3 py-1 border border-green-500 text-green-400 rounded-md hover:bg-green-600 hover:text-white transition">Login/Register</Link>
+              <Link to="/login" className="px-3 py-1 border w-fit border-green-500 text-green-400 rounded-md hover:bg-green-600 hover:text-white transition">Login / Register</Link>
             )}
           </div>
 
@@ -103,7 +103,7 @@ function Header() {
             </button>
             </>
           ) : (
-            <Link to="/login" onClick={() => setIsOpen(false)} className="px-3 py-1 w-32 border border-green-500 text-green-400 rounded-md hover:bg-green-600 hover:text-white transition">Login/Register</Link>
+            <Link to="/login" onClick={() => setIsOpen(false)} className="px-3 py-1 w-fit border border-green-500 text-green-400 rounded-md hover:bg-green-600 hover:text-white transition">Login / Register</Link>
           )}
         </div>
       )}
