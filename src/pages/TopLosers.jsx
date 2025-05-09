@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { fetchAllCoins } from '../api/coinsApi'; 
 
 const TopLosers = () => {
-    const[loasersData , setLosersData] = useState([]);
+    const [loasersData , setLosersData] = useState([]);
     const [retryCount, setRetryCount] = useState(0);
     const [loading, setLoading] = useState(true);
     const losersCount = 10;
@@ -20,7 +20,7 @@ const TopLosers = () => {
           );
     
           const topLosers = [...validCoins]
-            .sort((a, b) => b.price_change_percentage_24h - a.price_change_percentage_24h)
+            .sort((b, a) => b.price_change_percentage_24h - a.price_change_percentage_24h)
             .slice(0, losersCount);
     
           setLosersData(topLosers);
@@ -52,7 +52,7 @@ const TopLosers = () => {
       <div className='grid justify-items-center'>
         <div className='m-auto mt-20 flex items-center'>
           <span className='animate-pulse mr-1 text-4xl'>📉</span>
-          <h3 className='text-4xl text-green-600'> Top 10 Losers</h3>
+          <h3 className='text-4xl text-red-600'> Top 10 Losers</h3>
         </div>
         <div className='container m-auto mt-20'>
           <table className="w-full table-fixed text-white p-2">
