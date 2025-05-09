@@ -39,7 +39,7 @@ const AllCoins = () => {
       if (allCoin.length > 0) {
         setAllCoins(allCoin);
         setLoading(false);
-        setRetryCount(0); // Başarılıysa retry sıfırlanır
+        setRetryCount(0); 
       } else {
         throw new Error("Boş veri geldi");
       }
@@ -47,7 +47,7 @@ const AllCoins = () => {
       console.error("Veri çekme hatası:", error.message);
       setRetryCount(prev => prev + 1);
 
-      // Exponential retry delay
+      
       const delay = Math.min(60000, 2000 * retryCount); // Max 60sn
       setTimeout(getData, delay);
     }

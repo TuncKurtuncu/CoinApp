@@ -16,6 +16,8 @@ const CoinDetails = () => {
   const [coin, setCoin] = useState(null);
   const [btcAmount, setBtcAmount] = useState('');
   const [usdAmount, setUsdAmount] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
    function formatPrice(price) {
     if (price >= 1) {
       return `$${price.toFixed(2)}`; // Büyükse 2 ondalık
@@ -46,9 +48,30 @@ const CoinDetails = () => {
   };
 
   useEffect(() => {
-    axios.get(`https://api.coingecko.com/api/v3/coins/${id}?sparkline=true`)
-      .then(res => setCoin(res.data))
-      .catch(err => console.error(err));
+    const getData = async () => {
+      try {
+        setLoading(true);
+        const res = await axios.get(`https://api.coingecko.com/api/v3/coins/${id}?sparkline=true`)
+        if (res.data) {
+          setCoin(res.data);
+          setRetryCount(0);
+        } else {
+          throw new Error("Boş veri geldi");
+          
+        }
+      } catch (error) {
+        console.error("Veri çekme hatası :" ,error.message);
+        setRetryCount(prev => prev + 1);
+        const delay = Math.min(60000,2000 * retryCount);
+        setTimeout(getData,delay)
+      }
+    };
+    
+    getData();
+    const interval = setInterval(()=>{
+      getData();
+    },60000);
+    return () => clearInterval(interval);
   }, [id]);
 
   if (!coin) return <CoinLoader />;

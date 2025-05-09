@@ -80,6 +80,6 @@ export const fetchNewlyListedCoins = async () => {
     return newestCoins;
   } catch (error) {
     console.error('Yeni coinler alınırken hata oluştu:', error.message);
-    return []; // Hata durumunda boş array döndür
+    return []; 
   }
 };
