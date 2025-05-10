@@ -4,13 +4,37 @@ import logo from '../assets/logo.png';
 import { useNavigate, Link } from 'react-router-dom';
 import { auth } from '../api/firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { fetchAllCoins } from '../api/coinsApi';
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
-
+  const [searchTerm ,setSearchTerm] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
+  const [allCoins,setAllCoins] = useState([]);
   
+
+  useEffect(() =>{
+    const getCoins =async () => {
+      const coins = await fetchAllCoins();
+      setAllCoins(coins);
+    };
+    getCoins();
+  },[]);
+
+  useEffect(() => {
+  if (searchTerm.trim() === '') {
+    setSearchResult([]);
+    return;
+  }
+
+  const filtered = allCoins.filter((coin) =>
+    coin.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  setSearchResult(filtered.slice(0, 5));
+}, [searchTerm, allCoins]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -49,6 +73,33 @@ function Header() {
           <Link to="/gainers" className="hover:text-green-400">Top Gainers</Link>
           <Link to="/losers" className="hover:text-green-400">Top Losers</Link>
         </nav>
+        <div className="hidden md:flex relative w-full max-w-xs md:max-w-xs border border-gray-400 rounded-md">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search coin..."
+              className="px-3 py-1 rounded-md text-white w-full"
+            />
+
+            {searchResult.length > 0 && (
+              <ul className="absolute z-50 bg-[#15141a] text-white mt-1 rounded shadow w-full max-h-60 overflow-y-auto">
+                {searchResult.map((coin) => (
+                  <li key={coin.id}>
+                    <Link
+                      to={`/coin/${coin.id}`}
+                      onClick={() => setSearchTerm('')}
+                      className="flex items-center gap-2 px-3 py-2 hover:bg-gray-200"
+                    >
+                      <img src={coin.image} alt={coin.name} className="w-5 h-5" />
+                      <span>{coin.name}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        
 
         {/* Kullanıcı Butonları */}
         <div className="flex items-center gap-4">
