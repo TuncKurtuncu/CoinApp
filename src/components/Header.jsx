@@ -73,7 +73,7 @@ function Header() {
           <Link to="/gainers" className="hover:text-green-400">Top Gainers</Link>
           <Link to="/losers" className="hover:text-green-400">Top Losers</Link>
         </nav>
-        <div className="hidden md:flex relative w-full max-w-xs md:max-w-xs border border-gray-400 rounded-md">
+        <div className=" hidden md:block relative w-64 max-w-xs md:max-w-xs border border-gray-400 rounded-md">
             <input
               type="text"
               value={searchTerm}
@@ -89,7 +89,7 @@ function Header() {
                     <Link
                       to={`/coin/${coin.id}`}
                       onClick={() => setSearchTerm('')}
-                      className="flex items-center gap-2 px-3 py-2 hover:bg-gray-200"
+                      className="flex items-center gap-2 px-3 py-2 hover:hover:bg-[#1e1d24]"
                     >
                       <img src={coin.image} alt={coin.name} className="w-5 h-5" />
                       <span>{coin.name}</span>
