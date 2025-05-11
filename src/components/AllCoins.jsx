@@ -31,37 +31,39 @@ const AllCoins = () => {
   }, []);
 
   // Coin verilerini çek
+  useEffect(() => {
+  let isFetching = false;
+
   const getData = async () => {
+    if (isFetching) return; // Önceki istek bitmeden yeni istek atılmasın
+    isFetching = true;
+
     try {
       setLoading(true);
       const allCoin = await fetchAllCoins();
 
       if (allCoin.length > 0) {
         setAllCoins(allCoin);
-        setLoading(false);
-        setRetryCount(0); 
+        setRetryCount(0);
       } else {
-        throw new Error("Boş veri geldi");
+        console.warn("Boş veri geldi");
+        setRetryCount(prev => prev + 1);
       }
     } catch (error) {
       console.error("Veri çekme hatası:", error.message);
       setRetryCount(prev => prev + 1);
-
-      
-      const delay = Math.min(60000, 2000 * retryCount); // Max 60sn
-      setTimeout(getData, delay);
+    } finally {
+      setLoading(false);
+      isFetching = false;
     }
   };
 
-  useEffect(() => {
-    getData(); // İlk veri çekimi
+  getData(); // İlk çağrı
 
-    const interval = setInterval(() => {
-      getData(); // Her 60 saniyede bir veri yenile
-    }, 60000);
+  const interval = setInterval(getData, 60000); // Her 60 saniyede bir
 
-    return () => clearInterval(interval); // Temizleme
-  }, []);
+  return () => clearInterval(interval); // Temizlik
+}, []);
 
   // Favori verilerini yükle (önce Firestore, sonra local fallback)
   useEffect(() => {

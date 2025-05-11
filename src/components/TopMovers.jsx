@@ -69,8 +69,9 @@ const TopMovers = () => {
   return (
     <nav>
     <div className='grid justify-items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 '>
-      <Link to="/topvolume">
+      
    <div className="flex flex-col w-72 p-5 mt-10 mx-5 border rounded-md border-gray-400 xl:mx-20 items-center hover:border-gray-200">
+    <Link to="/topvolume">
    <div className="flex items-center ">
       <span className="animate-pulse mr-1 mb-2 ">🚀</span>
        <h2 className="text-xl font-bold mb-2 text-green-600">Top 10 Volume</h2>
@@ -106,13 +107,14 @@ const TopMovers = () => {
    ):(
     <CoinLoader/>
    )}
-   
+   </Link>
   </div>
-  </Link>
+  
   
 
-   <Link to='/gainers'>
+  
   <div className="flex flex-col w-72 p-5 mt-10 mx-5 border rounded-md border-gray-400 xl:mx-20 items-center  hover:border-gray-200">
+  <Link to='/gainers'>
   <div className="flex items-center ">
   <span className="animate-pulse mr-1 mb-2 ">🔥</span>
     <h2 className="text-xl font-bold mb-2 text-green-600">Top Gainers</h2>
@@ -142,13 +144,14 @@ const TopMovers = () => {
     </div>):(
       <CoinLoader/>
     )}
-    
+    </Link>
     
   </div>
-  </Link>
+  
 
-    <Link to='/losers'>
+    
   <div href='/' className="flex flex-col w-72 p-5 mt-10 mx-5 border rounded-md border-gray-400 xl:mx-20  items-center  hover:border-gray-200">
+  <Link to='/losers'>
   <div className="flex items-center ">
   <span className="animate-pulse mr-1 mb-2 ">📉</span>
     <h2 className="text-xl font-bold mb-2 text-red-600"> Top Losers</h2>
@@ -177,12 +180,13 @@ const TopMovers = () => {
     </div>):(
       <CoinLoader/>
     )}
-   
+   </Link>
   </div>
-  </Link>
+  
 
-    <Link to='/newcoins'>
+    
   <div className="flex flex-col w-72 p-5 mt-10 mx-5 border rounded-md border-gray-400 xl:mx-20 items-center  hover:border-gray-200">
+    <Link to='/newcoins'>
   <div className="flex items-center">
     <span className="animate-pulse mr-1 mb-2">🆕</span>
     <h2 className="text-xl font-bold mb-2 text-green-600">New Listing</h2>
@@ -233,9 +237,9 @@ const TopMovers = () => {
   </div>):(
      <CoinLoader/>
   )}
-  
+  </Link>
 </div>
-</Link>
+
 
 </div>
 </nav>

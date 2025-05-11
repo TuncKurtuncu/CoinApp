@@ -29,7 +29,7 @@ const TopVolume = () => {
     } catch (error) {
       console.error("Top volume verisi çekme hatası:", error.message);
       setRetryCount(prev => prev + 1);
-      const delay = Math.min(60000, 2000 * retryCount);
+      
       setTimeout(getData, delay);
     }
   };

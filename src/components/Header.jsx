@@ -73,7 +73,7 @@ function Header() {
           <Link to="/gainers" className="hover:text-green-400">Top Gainers</Link>
           <Link to="/losers" className="hover:text-green-400">Top Losers</Link>
         </nav>
-        <div className=" hidden md:block relative w-64 max-w-xs md:max-w-xs border border-gray-400 rounded-md">
+        <div className=" hidden md:block relative lg:w-52 md:w-32 max-w-xs md:max-w-xs border border-gray-400 rounded-md">
             <input
               type="text"
               value={searchTerm}
