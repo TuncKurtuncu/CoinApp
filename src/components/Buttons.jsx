@@ -45,11 +45,10 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           <button
             key={index}
             onClick={() => onPageChange(page)}
-            className={`px-3 py-1 rounded ${
-              page === currentPage
+            className={`px-3 py-1 rounded ${page === currentPage
                 ? 'bg-blue-950 text-white'
                 : 'bg-gray-800 text-gray-300'
-            }`}
+              }`}
           >
             {page}
           </button>

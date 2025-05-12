@@ -9,7 +9,7 @@ function ProtectedRoute({ children }) {
   const [user, loading] = useAuthState(auth);
 
   if (loading) {
-    return <CoinLoader/>;
+    return <CoinLoader />;
   }
 
   if (!user) {

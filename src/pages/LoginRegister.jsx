@@ -46,7 +46,7 @@ function LoginRegisterPage() {
   };
 
   return (
-    <div className="min-h-screen  flex items-center justify-center relative overflow-hidden " style={{ backgroundImage: `url(${bg})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+    <main className="min-h-screen  flex items-center justify-center relative overflow-hidden " style={{ backgroundImage: `url(${bg})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
        {alertMessage && (
           <CustomAlert
             message={alertMessage}
@@ -55,16 +55,16 @@ function LoginRegisterPage() {
           />
         )}
       <div className="relative z-10 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-xl p-8 w-[350px] text-white">
-        <h2 className="text-2xl font-bold mb-6 text-center flex flex-col items-center">
+        <h1 className="text-2xl font-bold mb-6 text-center flex flex-col items-center">
           <div className="flex items-center mb-2">
             <Link to="/">
-              <img src={logo} alt="logo" className="w-10 h-10 mr-2" />
+              <img src={logo} alt="CoinTrack Logo" className="w-10 h-10 mr-2" />
             </Link>
             <span className="text-white text-4xl">Coin</span>
             <span className="text-green-400 text-4xl">Track</span>
           </div>
           <span className="text-white">{isLogin ? 'Login' : 'Register'}</span>
-        </h2>
+        </h1>
        
 
         <form onSubmit={handleClick}>
@@ -125,7 +125,7 @@ function LoginRegisterPage() {
           )}
         </div>
       </div>
-    </div>
+    </main>
   );
 }
 

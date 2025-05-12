@@ -17,7 +17,7 @@ export const fetchAllCoins = async () => {
         price_change_percentage: '24h',
       },
     });
-    
+
     return response.data;
   } catch (error) {
     console.error('Coin verileri alınırken hata oluştu:', error);
@@ -29,14 +29,22 @@ export const fetchAllCoins = async () => {
 //Popüler Coinler (Market Cap En Yüksek)
 export const fetchPopularCoins = async () => {
   try {
-    const response = await axios.get(
-      'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=20&page=1&sparkline=false&price_change_percentage=24h'
-    );
+    // https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=20&page=1&sparkline=false&price_change_percentage=24h
+    const response = await axios.get(`${BASE_URL}/coins/markets`, {
+      params: {
+        vs_currency: 'usd',
+        order: 'market_cap_desc',
+        per_page: 20,
+        page: 1,
+        sparkline: false,
+        price_change_percentage: '24h',
+      },
+    });
 
     if (Array.isArray(response.data)) {
-    
+
       return response.data;
-      
+
     } else {
       throw new Error('Geçersiz veri formatı');
     }
@@ -50,7 +58,7 @@ export const fetchPopularCoins = async () => {
 // Yeni çıkan coinleri getir (son 5)
 export const fetchNewlyListedCoins = async () => {
   try {
-    const response = await axios.get('https://api.coingecko.com/api/v3/coins/markets', {
+    const response = await axios.get(`${BASE_URL}/coins/markets`, {
       params: {
         vs_currency: 'usd',
         order: 'id_asc',
@@ -63,8 +71,8 @@ export const fetchNewlyListedCoins = async () => {
 
     // Geçerli olan coin'leri filtrele (name ve price kontrolü)
     const validCoins = response.data.filter(
-      (coin) => coin.name && coin.current_price && coin.symbol && coin.image 
-      && coin.current_price && coin.price_change_percentage_24h != null
+      (coin) => coin.name && coin.current_price && coin.symbol && coin.image
+        && coin.current_price && coin.price_change_percentage_24h != null
     );
 
     // Filtrelenmiş ve istenilen veriyi almak
@@ -76,10 +84,10 @@ export const fetchNewlyListedCoins = async () => {
       price: coin.current_price,
       price_change_percentage_24h: coin.price_change_percentage_24h,
     }));
-    
+
     return newestCoins;
   } catch (error) {
     console.error('Yeni coinler alınırken hata oluştu:', error.message);
-    return []; 
+    return [];
   }
 };

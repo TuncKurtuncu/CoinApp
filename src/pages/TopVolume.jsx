@@ -29,7 +29,7 @@ const TopVolume = () => {
     } catch (error) {
       console.error("Top volume verisi çekme hatası:", error.message);
       setRetryCount(prev => prev + 1);
-      
+
       setTimeout(getData, delay);
     }
   };
@@ -42,11 +42,13 @@ const TopVolume = () => {
     return () => clearInterval(interval);
   }, []);
 
-    return (
-      <div>
-        <div className='sticky top-0 z-50'>
-          <Header />
-        </div>
+  return (
+    <>
+
+      <header className='sticky top-0 z-50'>
+        <Header />
+      </header>
+      <main>
         <div className='grid justify-items-center'>
           <div className='m-auto mt-20 flex items-center'>
             <span className='animate-pulse mr-1 text-4xl'>🔥</span>
@@ -56,11 +58,11 @@ const TopVolume = () => {
             <table className="w-full table-fixed text-white p-2">
               <thead>
                 <tr>
-                  <th className="px-4 text-left w-1/5">Name</th>
-                  <th className="px-4 text-right w-1/5">Price</th>
-                  <th className="px-4 text-right w-1/5">Change</th>
-                  <th className="px-4 text-right w-1/5 md:table-cell hidden">24h Volume</th>
-                  <th className="px-4 text-right w-1/5 md:table-cell hidden">Market Cap</th>
+                  <th scope="col" className="px-4 text-left w-1/5">Name</th>
+                  <th scope="col" className="px-4 text-right w-1/5">Price</th>
+                  <th scope="col" className="px-4 text-right w-1/5">Change</th>
+                  <th scope="col" className="px-4 text-right w-1/5 md:table-cell hidden">24h Volume</th>
+                  <th scope="col" className="px-4 text-right w-1/5 md:table-cell hidden">Market Cap</th>
                 </tr>
               </thead>
               <tbody>
@@ -105,8 +107,9 @@ const TopVolume = () => {
             </table>
           </div>
         </div>
-      </div>
-    );
-  };
+      </main>
+    </>
+  );
+};
 
 export default TopVolume;

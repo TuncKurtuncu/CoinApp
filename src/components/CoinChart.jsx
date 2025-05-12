@@ -1,7 +1,7 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 const CoinChart = () => {
-  
+
 
   return (
     <div className="w-full h-64 mt-8">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { fetchAllCoins } from '../api/coinsApi';
 import CoinLoader from './Loader';
 import Pagination from './Buttons';
@@ -19,8 +19,7 @@ const AllCoins = () => {
   const IndexOfFirstItem = IndexOfLastItem - ItemsPerPage;
   const currentCoins = allCoins.slice(IndexOfFirstItem, IndexOfLastItem);
   const totalPages = Math.ceil(allCoins.length / ItemsPerPage);
-
-  const [retryCount, setRetryCount] = useState(0);
+  const isFetching = useRef(false);
 
   // Auth dinleme
   useEffect(() => {
@@ -32,38 +31,31 @@ const AllCoins = () => {
 
   // Coin verilerini çek
   useEffect(() => {
-  let isFetching = false;
+    const getData = async () => {
+      if (isFetching.current) return;
+      isFetching.current = true;
+      try {
+        setLoading(true);
+        const allCoin = await fetchAllCoins();
 
-  const getData = async () => {
-    if (isFetching) return; // Önceki istek bitmeden yeni istek atılmasın
-    isFetching = true;
-
-    try {
-      setLoading(true);
-      const allCoin = await fetchAllCoins();
-
-      if (allCoin.length > 0) {
-        setAllCoins(allCoin);
-        setRetryCount(0);
-      } else {
-        console.warn("Boş veri geldi");
-        setRetryCount(prev => prev + 1);
+        if (allCoin.length > 0) {
+          setAllCoins(allCoin); 
+        } else {
+          console.warn("Boş veri geldi");
+        }
+      } catch (error) {
+        console.error("Veri çekme hatası:", error.message);
+      } finally {
+        setLoading(false);
+        isFetching.current = false;
       }
-    } catch (error) {
-      console.error("Veri çekme hatası:", error.message);
-      setRetryCount(prev => prev + 1);
-    } finally {
-      setLoading(false);
-      isFetching = false;
-    }
-  };
+    };
 
-  getData(); // İlk çağrı
+    getData();
+    const interval = setInterval(getData, 60000);
 
-  const interval = setInterval(getData, 60000); // Her 60 saniyede bir
-
-  return () => clearInterval(interval); // Temizlik
-}, []);
+    return () => clearInterval(interval);
+  }, []);
 
   // Favori verilerini yükle (önce Firestore, sonra local fallback)
   useEffect(() => {
@@ -147,9 +139,8 @@ const AllCoins = () => {
                 <td className="px-4 py-2 flex items-center gap-2">
                   {user && (
                     <FaStar
-                      className={`cursor-pointer text-lg ${
-                        favoriteCoins.includes(coin.id) ? 'text-yellow-400' : 'text-gray-600'
-                      }`}
+                      className={`cursor-pointer text-lg ${favoriteCoins.includes(coin.id) ? 'text-yellow-400' : 'text-gray-600'
+                        }`}
                       onClick={() => toggleFavorite(coin.id)}
                     />
                   )}
@@ -167,13 +158,12 @@ const AllCoins = () => {
                   {coin.current_price != null ? formatPrice(coin.current_price) : 'N/A'}
                 </td>
                 <td
-                  className={`px-4 py-2 text-right ${
-                    coin.price_change_percentage_24h > 0
-                      ? 'text-green-400'
-                      : coin.price_change_percentage_24h < 0
+                  className={`px-4 py-2 text-right ${coin.price_change_percentage_24h > 0
+                    ? 'text-green-400'
+                    : coin.price_change_percentage_24h < 0
                       ? 'text-red-400'
                       : 'text-white'
-                  }`}
+                    }`}
                 >
                   {coin.price_change_percentage_24h != null
                     ? `${coin.price_change_percentage_24h.toFixed(3)}%`

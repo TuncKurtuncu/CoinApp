@@ -2,12 +2,12 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore"
 
-const api_key =import.meta.env.VITE_FIREBASE_API_KEY;
+const api_key = import.meta.env.VITE_FIREBASE_API_KEY;
 const proje_id = import.meta.env.VITE_FIREBASE_PROJE_ID;
-const sender_id =import.meta.env.VITE_SENDER_ID;
+const sender_id = import.meta.env.VITE_SENDER_ID;
 const domain = import.meta.env.VITE_DOMAIN;
 const s_bucket = import.meta.env.VITE_S_BUCKET;
-const app_id =import.meta.env.VITE_APP_ID;
+const app_id = import.meta.env.VITE_APP_ID;
 
 
 const firebaseConfig = {

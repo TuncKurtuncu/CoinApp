@@ -11,9 +11,9 @@ function Header() {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  
 
-  
+
+
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -52,8 +52,8 @@ function Header() {
           <Link to="/gainers" className="hover:text-green-400">Top Gainers</Link>
           <Link to="/losers" className="hover:text-green-400">Top Losers</Link>
         </nav>
-        
-        
+
+
 
         {/* Kullanıcı Butonları */}
         <div className="flex items-center gap-4">
@@ -62,11 +62,11 @@ function Header() {
               <>
                 <Link to="/profile" className="px-3 py-1 border border-blue-500 text-blue-400 rounded-md hover:bg-blue-600 hover:text-white transition">Profil</Link>
                 <button
-            onClick={handleLogout}
-            className="px-3 py-1 border border-red-500 text-red-400 rounded-md hover:bg-red-600 hover:text-white transition"
-            >
-              Logout
-            </button>
+                  onClick={handleLogout}
+                  className="px-3 py-1 border border-red-500 text-red-400 rounded-md hover:bg-red-600 hover:text-white transition"
+                >
+                  Logout
+                </button>
               </>
             ) : (
               <Link to="/login" className="px-3 py-1 border w-fit border-green-500 text-green-400 rounded-md hover:bg-green-600 hover:text-white transition">Login / Register</Link>
@@ -96,17 +96,17 @@ function Header() {
           <Link to="/topvolume" onClick={() => setIsOpen(false)} className="text-white text-lg hover:text-green-400">Top Volume</Link>
           <Link to="/gainers" onClick={() => setIsOpen(false)} className="text-white text-lg hover:text-green-400">Top Gainers</Link>
           <Link to="/losers" onClick={() => setIsOpen(false)} className="text-white text-lg hover:text-green-400 pb-16">Top Losers</Link>
-          
+
 
           {user ? (
             <>
               <Link to="/profile" onClick={() => setIsOpen(false)} className="px-3 py-1  border border-blue-500 text-blue-400 rounded-md hover:bg-blue-600 hover:text-white transition">Profil</Link>
               <button
-            onClick={handleLogout}
-            className="px-3 py-1 border border-red-500 text-red-400 rounded-md hover:bg-red-600 hover:text-white transition"
-            >
-              Logout
-            </button>
+                onClick={handleLogout}
+                className="px-3 py-1 border border-red-500 text-red-400 rounded-md hover:bg-red-600 hover:text-white transition"
+              >
+                Logout
+              </button>
             </>
           ) : (
             <Link to="/login" onClick={() => setIsOpen(false)} className="px-3 py-1 w-fit border border-green-500 text-green-400 rounded-md hover:bg-green-600 hover:text-white transition">Login / Register</Link>
