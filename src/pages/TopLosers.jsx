@@ -6,7 +6,6 @@ import { fetchAllCoins } from '../api/coinsApi';
 
 const TopLosers = () => {
   const [loasersData, setLosersData] = useState([]);
-  const [retryCount, setRetryCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const losersCount = 10;
 
@@ -24,13 +23,10 @@ const TopLosers = () => {
         .slice(0, losersCount);
 
       setLosersData(topLosers);
-      setRetryCount(0);
       setLoading(false);
     } catch (error) {
       console.error("Losers verisi çekme hatası:", error.message);
-      setRetryCount(prev => prev + 1);
-      const delay = Math.min(60000, 2000 * retryCount);
-      setTimeout(getData, delay);
+      
     }
   };
 

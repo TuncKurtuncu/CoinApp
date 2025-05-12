@@ -6,7 +6,6 @@ import { fetchAllCoins } from '../api/coinsApi';
 
 const TopVolume = () => {
   const [topVolume, setTopVolume] = useState([]);
-  const [retryCount, setRetryCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const topVolumeCount = 10;
 
@@ -24,13 +23,9 @@ const TopVolume = () => {
         .slice(0, topVolumeCount);
 
       setTopVolume(topVolumeCoins);
-      setRetryCount(0);
       setLoading(false);
     } catch (error) {
       console.error("Top volume verisi çekme hatası:", error.message);
-      setRetryCount(prev => prev + 1);
-
-      setTimeout(getData, delay);
     }
   };
 
