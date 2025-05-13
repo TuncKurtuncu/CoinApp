@@ -64,12 +64,22 @@ function Profile() {
 
   // Tüm coinler
   useEffect(() => {
-    const getAllCoins = async () => {
-      const coins = await fetchAllCoins();
-      setAllCoins(coins);
-    };
+  const getAllCoins = async () => {
+    const coins = await fetchAllCoins();
+    setAllCoins(coins);
+  };
+
+  // İlk başta bir kere çek
+  getAllCoins();
+
+  // Her 60 saniyede bir veriyi tekrar çek
+  const interval = setInterval(() => {
     getAllCoins();
-  }, []);
+  }, 60000); // 60000 ms = 60 saniye
+
+  // Component unmount olunca interval'i temizle
+  return () => clearInterval(interval);
+}, []);
 
   // Favori detayları
   useEffect(() => {
