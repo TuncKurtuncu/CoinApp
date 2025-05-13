@@ -24,11 +24,11 @@ function LoginRegisterPage() {
       if (isLogin) {
         await signInWithEmailAndPassword(auth, email, password);
         setAlertType("success");
-        setAlertMessage("Giriş başarılı!\nAnasayfaya yönlendiriliyorsunuz");
+        setAlertMessage("Giriş başarılı! Anasayfaya yönlendiriliyorsunuz");
       } else {
         await createUserWithEmailAndPassword(auth, email, password);
         setAlertType("success");
-        setAlertMessage("Kayıt başarılı!\nAnasayfaya yönlendiriliyorsunuz");
+        setAlertMessage("Kayıt başarılı! Anasayfaya yönlendiriliyorsunuz");
       }
       setTimeout(() => navigate('/'), 1000);
     } catch (error) {
@@ -51,7 +51,7 @@ function LoginRegisterPage() {
           <CustomAlert
             message={alertMessage}
             type={alertType}
-            onClose={() => setAlertMessage("")} // dikkat: state ismi burada da yanlış yazılmıştı
+            onClose={() => setAlertMessage("")} 
           />
         )}
       <div className="relative z-10 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-xl p-8 w-[350px] text-white">

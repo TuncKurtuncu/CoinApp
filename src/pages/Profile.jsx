@@ -146,7 +146,12 @@ function Profile() {
   };
 
 
-  const totalProfitLoss = portfolioEntries.reduce((acc, entry) => acc + (entry.profitLoss || 0), 0);
+  const totalProfitLoss = portfolioEntries.reduce((acc, entry) => {
+    const liveCoin = allCoins.find(c => c.id === entry.coinId);
+    const livePrice = liveCoin?.current_price || entry.currentPrice;
+    const profitLoss = (livePrice - entry.buyPrice) * entry.amount;
+    return acc + profitLoss;
+  }, 0);
 
 
   return (
@@ -182,10 +187,10 @@ function Profile() {
                         </div>
                         <div
                           className={`text-sm ${coin.price_change_percentage_24h > 0
-                              ? 'text-green-400'
-                              : coin.price_change_percentage_24h < 0
-                                ? 'text-red-400'
-                                : 'text-white'
+                            ? 'text-green-400'
+                            : coin.price_change_percentage_24h < 0
+                              ? 'text-red-400'
+                              : 'text-white'
                             }`}
                         >
                           {coin.price_change_percentage_24h?.toFixed(2)}%
@@ -274,31 +279,32 @@ function Profile() {
                   </tr>
                 </thead>
                 <tbody>
-                  {portfolioEntries.map((entry, index) => (
-                    <tr key={index} className="border-b border-gray-700">
-                      <td className="p-2">{entry.coinId}</td>
-                      <td className="p-2">${entry.buyPrice}</td>
-                      <td className="p-2">{entry.amount}</td>
-                      <td className="p-2">${entry.currentPrice}</td>
-                      <td className={`p-2 ${entry.profitLoss > 0 ? 'text-green-400' : entry.profitLoss < 0 ? 'text-red-400' : ''}`}>
-                        ${entry.profitLoss}
-                      </td>
-                      <td className="p-2">
-                        <button
-                          onClick={() => handleDeleteCoin(index)}
-                          className="hover:text-red-500"
-                        >
-                          🗑️
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                  {portfolioEntries.map((entry, index) => {
+                    const liveCoin = allCoins.find(c => c.id === entry.coinId);
+                    const livePrice = liveCoin?.current_price || entry.currentPrice;
+                    const profitLoss = ((livePrice - entry.buyPrice) * entry.amount).toFixed(2);
+
+                    return (
+                      <tr key={index} className="border-b border-gray-700">
+                        <td className="p-2">{entry.coinId}</td>
+                        <td className="p-2">${entry.buyPrice}</td>
+                        <td className="p-2">{entry.amount}</td>
+                        <td className="p-2">${livePrice}</td>
+                        <td className={`p-2 ${profitLoss > 0 ? 'text-green-400' : profitLoss < 0 ? 'text-red-400' : ''}`}>
+                          ${profitLoss}
+                        </td>
+                        <td className="p-2">
+                          <button onClick={() => handleDeleteCoin(index)}>🗑️</button>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             )}
 
             <div className="mt-4 text-lg font-semibold">
-              Toplam Kar/Zarar: <span className={`${totalProfitLoss > 0 ? 'text-green-400' : 'text-red-400'}`}>${totalProfitLoss.toFixed(2)}</span>
+              Toplam Kar/Zarar: <span className={`${totalProfitLoss > 0 ? 'text-green-400' : totalProfitLoss < 0 ? 'text-red-400' : 'text-white'}`}>${totalProfitLoss.toFixed(2)}</span>
             </div>
           </div>
         </div>

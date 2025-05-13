@@ -4,7 +4,7 @@ import logo from '../assets/logo.png';
 import { useNavigate, Link } from 'react-router-dom';
 import { auth } from '../api/firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { fetchAllCoins } from '../api/coinsApi';
+
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);

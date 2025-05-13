@@ -23,9 +23,7 @@ function CustomAlert({ message, type = 'success', onClose }) {
         ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}
       `}
     >
-      {message.split('\n').map((line, i) => (
-        <div key={i}>{line}</div>
-      ))}
+      {message}
     </div>
   );
 }

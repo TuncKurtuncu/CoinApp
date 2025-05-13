@@ -9,10 +9,19 @@ const SearchBar = () => {
 
   useEffect(() => {
     const getCoins = async () => {
-      const coins = await fetchAllCoins();
-      setAllCoins(coins);
+      try {
+        const coins = await fetchAllCoins();
+        setAllCoins(coins);
+      } catch (error) {
+        console.error("Veri çekme hatası:", error.message);
+      }
+
     };
     getCoins();
+    const interval = setInterval(() => {
+      getData(); // Her 60 saniyede bir veri yenile
+    }, 60000);
+    return () => clearInterval(interval); // Temizleme
   }, []);
 
   useEffect(() => {
