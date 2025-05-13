@@ -271,9 +271,9 @@ function Profile() {
                 <thead className="text-white border-b border-gray-600">
                   <tr>
                     <th className="p-2">Coin</th>
-                    <th className="p-2">Alış Fiyatı</th>
+                    <th className=" hidden md:block p-2">Alış Fiyatı</th>
                     <th className="p-2">Adet</th>
-                    <th className="p-2">Mevcut Fiyat</th>
+                    <th className=" hidden md:block p-2">Mevcut Fiyat</th>
                     <th className="p-2">Kar/Zarar</th>
                     <th className="p-2">Sil</th>
                   </tr>
@@ -287,9 +287,9 @@ function Profile() {
                     return (
                       <tr key={index} className="border-b border-gray-700">
                         <td className="p-2">{entry.coinId}</td>
-                        <td className="p-2">${entry.buyPrice}</td>
+                        <td className="hidden md:block p-2">${entry.buyPrice}</td>
                         <td className="p-2">{entry.amount}</td>
-                        <td className="p-2">${livePrice}</td>
+                        <td className="hidden md:block p-2">${livePrice}</td>
                         <td className={`p-2 ${profitLoss > 0 ? 'text-green-400' : profitLoss < 0 ? 'text-red-400' : ''}`}>
                           ${profitLoss}
                         </td>

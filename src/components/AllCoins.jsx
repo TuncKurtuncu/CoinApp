@@ -39,7 +39,7 @@ const AllCoins = () => {
         const allCoin = await fetchAllCoins();
 
         if (allCoin.length > 0) {
-          setAllCoins(allCoin); 
+          setAllCoins(allCoin);
         } else {
           console.warn("Boş veri geldi");
         }
@@ -138,11 +138,12 @@ const AllCoins = () => {
               <tr key={coin.id} className="text-sm hover:bg-[#1e1d24]">
                 <td className="px-4 py-2 flex items-center gap-2">
                   {user && (
-                    <FaStar
-                      className={`cursor-pointer text-lg ${favoriteCoins.includes(coin.id) ? 'text-yellow-400' : 'text-gray-600'
-                        }`}
-                      onClick={() => toggleFavorite(coin.id)}
-                    />
+                    <div className="flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8">
+                      <FaStar
+                        className={`cursor-pointer text-sm ${favoriteCoins.includes(coin.id) ? 'text-yellow-400' : 'text-gray-600'}`}
+                        onClick={() => toggleFavorite(coin.id)}
+                      />
+                    </div>
                   )}
                   <Link to={`/coin/${coin.id}`} className="flex items-center gap-2">
                     <img src={coin.image} alt={coin.name} className="w-5 h-5" />
