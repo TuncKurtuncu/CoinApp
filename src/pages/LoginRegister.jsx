@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // useEffect importu eklendi
 import { Link, useNavigate } from 'react-router-dom';
 import { auth } from '../api/firebase';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword
@@ -14,9 +15,34 @@ function LoginRegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
-  const navigate = useNavigate();
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("success");
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    let logoutTimeout;
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      if (currentUser) {
+        const logoutTimeout = setTimeout(() => {
+          signOut(auth)
+            .then(() => {
+              navigate('/');
+            })
+            .catch((error) => {
+              console.error('Çıkış yapılırken hata oluştu:', error);
+            });
+        }, 30 * 60 * 1000);
+      }
+    });
+
+    return () => {
+      unsubscribe();
+      clearTimeout(logoutTimeout)
+    };
+
+  }, [navigate]);
 
   const handleClick = async (e) => {
     e.preventDefault();
@@ -46,14 +72,19 @@ function LoginRegisterPage() {
   };
 
   return (
-    <main className="min-h-screen  flex items-center justify-center relative overflow-hidden " style={{ backgroundImage: `url(${bg})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
-       {alertMessage && (
-          <CustomAlert
-            message={alertMessage}
-            type={alertType}
-            onClose={() => setAlertMessage("")} 
-          />
-        )}
+    <main className="min-h-screen  flex items-center justify-center relative overflow-hidden "
+      style={{
+        backgroundImage: `url(${bg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+      }}>
+      {alertMessage && (
+        <CustomAlert
+          message={alertMessage}
+          type={alertType}
+          onClose={() => setAlertMessage("")}
+        />
+      )}
       <div className="relative z-10 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-xl p-8 w-[350px] text-white">
         <h1 className="text-2xl font-bold mb-6 text-center flex flex-col items-center">
           <div className="flex items-center mb-2">
@@ -65,7 +96,7 @@ function LoginRegisterPage() {
           </div>
           <span className="text-white">{isLogin ? 'Login' : 'Register'}</span>
         </h1>
-       
+
 
         <form onSubmit={handleClick}>
           {!isLogin && (

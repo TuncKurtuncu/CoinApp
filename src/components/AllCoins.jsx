@@ -156,7 +156,9 @@ const AllCoins = () => {
                   </Link>
                 </td>
                 <td className="px-4 py-2 text-right">
-                  {coin.current_price != null ? formatPrice(coin.current_price) : 'N/A'}
+                  ${coin.current_price != null ? coin.current_price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 'N/A'}
+
+
                 </td>
                 <td
                   className={`px-4 py-2 text-right ${coin.price_change_percentage_24h > 0

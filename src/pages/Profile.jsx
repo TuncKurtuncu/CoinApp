@@ -182,9 +182,9 @@ function Profile() {
 
 
 
-            <h2 className="text-2xl font-semibold mb-3">⭐ Takip Edilen Coinler</h2>
+            <h2 className="text-2xl font-semibold mb-3">⭐ Tracked Coins</h2>
             {coinDetails.length === 0 ? (
-              <p className="text-gray-400">Henüz takip edilen coin yok.</p>
+              <p className="text-gray-400">No coins are currently being followed.</p>
             ) : (
               <ul className="space-y-5">
                 {coinDetails.map((coin) => (
@@ -193,7 +193,8 @@ function Profile() {
                       <img src={coin.image} alt={coin.name} className="w-10 h-10" />
                       <div>
                         <div className="text-lg font-medium">
-                          {coin.name} ({coin.symbol}) - ${coin.current_price}
+                          {coin.name} ({coin.symbol}) - ${coin.current_price != null ? coin.current_price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 'N/A'}
+
                         </div>
                         <div
                           className={`text-sm ${coin.price_change_percentage_24h > 0
@@ -228,14 +229,14 @@ function Profile() {
 
           {/* Sağ */}
           <div className="lg:w-1/2 ">
-            <h2 className="text-2xl font-semibold mb-3">💼 Portföy</h2>
+            <h2 className="text-2xl font-semibold mb-3">💼 Crypto Portfolio</h2>
 
             {/* Coin Ekleme Formu */}
             <form onSubmit={handleAddCoin} className="mb-6 bg-[#1e1d24] p-4 rounded-lg space-y-4">
-              <h3 className="text-xl font-semibold">🛒 Coin Ekle</h3>
+              <h3 className="text-xl font-semibold">🛒 Insert Coin</h3>
 
               <div>
-                <label>Coin ID:</label>
+                <label>Coin Name:</label>
                 <input
                   type="text"
                   value={coinId}
@@ -245,7 +246,7 @@ function Profile() {
                 />
               </div>
               <div>
-                <label>Alış Fiyatı ($):</label>
+                <label>Entry Price ($):</label>
                 <input
                   type="number"
                   value={buyPrice}
@@ -254,7 +255,7 @@ function Profile() {
                 />
               </div>
               <div>
-                <label>Adet:</label>
+                <label>Quantity:</label>
                 <input
                   type="number"
                   value={amount}
@@ -267,7 +268,7 @@ function Profile() {
                 type="submit"
                 className="w-full bg-blue-950 p-2 rounded-lg hover:bg-blue-900 text-white mt-3"
               >
-                Coin Ekle
+                Add a Coin
               </button>
 
               {formMessage && <p className="text-sm mt-2">{formMessage}</p>}
@@ -275,17 +276,17 @@ function Profile() {
 
             {/* Alım Listesi */}
             {portfolioEntries.length === 0 ? (
-              <p className="text-gray-400">Henüz coin eklenmedi.</p>
+              <p className="text-gray-400">No coins added yet.</p>
             ) : (
               <table className="w-full text-sm text-left bg-[#1e1d24] rounded-lg">
                 <thead className="text-white border-b border-gray-600">
                   <tr>
                     <th className="p-2">Coin</th>
-                    <th className=" hidden md:block p-2">Alış Fiyatı</th>
-                    <th className="p-2">Adet</th>
-                    <th className=" hidden md:block p-2">Mevcut Fiyat</th>
-                    <th className="p-2">Kar/Zarar</th>
-                    <th className="p-2">Sil</th>
+                    <th className=" hidden md:block p-2">Buy Price</th>
+                    <th className="p-2">Quantity</th>
+                    <th className=" hidden md:block p-2">Current Price</th>
+                    <th className="p-2">Profit/Loss</th>
+                    <th className="p-2">Delete</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -297,9 +298,9 @@ function Profile() {
                     return (
                       <tr key={index} className="border-b border-gray-700">
                         <td className="p-2">{entry.coinId}</td>
-                        <td className="hidden md:block p-2">${entry.buyPrice}</td>
+                        <td className="hidden md:block p-2">${entry.buyPrice != null ? entry.buyPrice.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 'N/A'}</td>
                         <td className="p-2">{entry.amount}</td>
-                        <td className="hidden md:block p-2">${livePrice}</td>
+                        <td className="hidden md:block p-2">${livePrice != null ? entry.buyPrice.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 'N/A'}</td>
                         <td className={`p-2 ${profitLoss > 0 ? 'text-green-400' : profitLoss < 0 ? 'text-red-400' : ''}`}>
                           ${profitLoss}
                         </td>
@@ -314,7 +315,7 @@ function Profile() {
             )}
 
             <div className="mt-4 text-lg font-semibold">
-              Toplam Kar/Zarar: <span className={`${totalProfitLoss > 0 ? 'text-green-400' : totalProfitLoss < 0 ? 'text-red-400' : 'text-white'}`}>${totalProfitLoss.toFixed(2)}</span>
+              Total Profit/Loss: <span className={`${totalProfitLoss > 0 ? 'text-green-400' : totalProfitLoss < 0 ? 'text-red-400' : 'text-white'}`}>${totalProfitLoss.toFixed(2)}</span>
             </div>
           </div>
         </div>
