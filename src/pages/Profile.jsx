@@ -300,7 +300,7 @@ function Profile() {
                         <td className="p-2">{entry.coinId}</td>
                         <td className="hidden md:block p-2">${entry.buyPrice != null ? entry.buyPrice.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 'N/A'}</td>
                         <td className="p-2">{entry.amount}</td>
-                        <td className="hidden md:block p-2">${livePrice != null ? entry.buyPrice.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 'N/A'}</td>
+                       <td className="hidden md:block p-2">${livePrice != null ? livePrice.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 'N/A'}</td>
                         <td className={`p-2 ${profitLoss > 0 ? 'text-green-400' : profitLoss < 0 ? 'text-red-400' : ''}`}>
                           ${profitLoss}
                         </td>
