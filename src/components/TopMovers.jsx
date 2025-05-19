@@ -70,7 +70,7 @@ const TopMovers = () => {
           <Link to="/topvolume">
             <div className="flex items-center ">
               <span className="animate-pulse mr-1 mb-2 ">🚀</span>
-              <h2 className="text-xl font-bold mb-2 text-green-600">Top  Volume</h2>
+              <h2 className="text-xl font-bold mb-2 text-green-600">Top Volume</h2>
             </div>
             {populars.length > 0 ? (
               <div>

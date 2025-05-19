@@ -97,80 +97,73 @@ const CoinDetails = () => {
   }));
 
   const handleBuyClick = async () => {
-  // Giriş kontrolü
-  if (!user) {
-    setAlertType("error");
-    setAlertMessage("Lütfen giriş yapınız.");
-    return;
-  }
+    // Miktar kontrolü
+    if (!btcAmount && !usdAmount) {
+      setAlertType("error");
+      setAlertMessage("Lütfen bir miktar girin!");
+      return;
+    }
 
-  // Miktar kontrolü
-  if (!btcAmount && !usdAmount) {
-    setAlertType("error");
-    setAlertMessage("Lütfen bir miktar girin!");
-    return;
-  }
+    // Portföye ekleme işlemi
+    if (!coin) return;
 
-  // Portföye ekleme işlemi
-  if (!coin) return;
+    const coinId = coin.id;
+    const buyPrice = coin.market_data.current_price.usd;
+    const amount = btcAmount || 1; // btcAmount varsa onu al, yoksa 1
+    const profitLoss = 0;
+    const currentPrice = buyPrice;
 
-  const coinId = coin.id;
-  const buyPrice = coin.market_data.current_price.usd;
-  const amount = btcAmount || 1; // btcAmount varsa onu al, yoksa 1
-  const profitLoss = 0;
-  const currentPrice = buyPrice;
+    const newEntry = {
+      coinId,
+      buyPrice,
+      amount,
+      currentPrice,
+      profitLoss
+    };
 
-  const newEntry = {
-    coinId,
-    buyPrice,
-    amount,
-    currentPrice,
-    profitLoss
+    const docRef = doc(db, 'portfolio', user.uid);
+    const docSnap = await getDoc(docRef);
+    let updatedEntries = [];
+
+    if (docSnap.exists()) {
+      updatedEntries = docSnap.data().entries || [];
+    }
+
+    updatedEntries.push(newEntry);
+
+    try {
+      await setDoc(docRef, { entries: updatedEntries });
+
+      setAlertType("success");
+      setAlertMessage(
+        <div className="flex items-center gap-4">
+          <img src={coin.image.large} alt={coin.name} className="w-8 h-8" />
+          <span>{amount} adet {coin.name} satın alındı ve portföyüne eklendi.</span>
+        </div>
+      );
+    } catch (error) {
+      console.error("Hata:", error);
+      setAlertType("error");
+      setAlertMessage("Coin portföye eklenirken bir hata oluştu.");
+    }
+
+    // 3 saniye sonra alert'i kapat
+    setTimeout(() => {
+      setAlertMessage("");
+    }, 3000);
   };
-
-  const docRef = doc(db, 'portfolio', user.uid);
-  const docSnap = await getDoc(docRef);
-  let updatedEntries = [];
-
-  if (docSnap.exists()) {
-    updatedEntries = docSnap.data().entries || [];
-  }
-
-  updatedEntries.push(newEntry);
-
-  try {
-    await setDoc(docRef, { entries: updatedEntries });
-
-    setAlertType("success");
-    setAlertMessage(
-      <div className="flex items-center gap-4">
-        <img src={coin.image.large} alt={coin.name} className="w-8 h-8" />
-        <span>{amount} adet {coin.name} satın alındı ve portföyüne eklendi.</span>
-      </div>
-    );
-  } catch (error) {
-    console.error("Hata:", error);
-    setAlertType("error");
-    setAlertMessage("Coin portföye eklenirken bir hata oluştu.");
-  }
-
-  // 3 saniye sonra alert'i kapat
-  setTimeout(() => {
-    setAlertMessage("");
-  }, 3000);
-};
 
   return (
     <>
-    {alertMessage && (
-          <CustomAlert
-            message={alertMessage}
-            type={alertType}
-            onClose={() => setAlertMessage("")} 
-          />
-        )}
+      {alertMessage && (
+        <CustomAlert
+          message={alertMessage}
+          type={alertType}
+          onClose={() => setAlertMessage("")}
+        />
+      )}
       <div className="flex flex-col mt-24 items-center lg:flex-row gap-8 p-8 rounded-xl bg-[#15141a] text-white overflow-hidden ">
-        
+
         {/* Sol taraf - Coin Detayları */}
         <div className="flex-1">
           <div className="flex items-center gap-4 mb-6">
@@ -280,15 +273,14 @@ const CoinDetails = () => {
               <span className="ml-2 font-semibold">USD</span>
             </div>
           </div>
-          {user ? (
-            <button onClick={handleBuyClick} className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-2 rounded">
-              Buy {coin.symbol.toUpperCase()}
-            </button>
-          ) : (
-            <button onClick={handleBuyClick} className="w-full bg-yellow-400  text-black font-bold py-2 rounded">
-              Buy {coin.symbol.toUpperCase()}
-            </button>
-          )}
+          <button
+            onClick={handleBuyClick}
+            disabled={!user}
+            className={`w-full bg-yellow-400 text-black font-bold py-2 rounded ${user ? 'hover:bg-yellow-500 cursor-pointer' : 'opacity-50 cursor-not-allowed'
+              }`}
+          >
+            Buy {coin.symbol.toUpperCase()}
+          </button>
 
         </div>
       </div>
